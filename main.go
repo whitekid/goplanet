@@ -23,6 +23,10 @@ func main() {
 	// load feeds
 	parser := gofeed.NewParser()
 	for _, section := range cfg.Sections() {
+		if section.Name() == "DEFAULT" {
+			continue
+		}
+
 		url, err := url.Parse(section.Name())
 		if err != nil {
 			log.Printf("Fail to parse feed url: %s, %s", section.Name(), err)
@@ -41,7 +45,6 @@ func main() {
 		}
 
 		items = append(items, feed.Items...)
-		// log.Printf("%d item, %s, %q", len(feed.Items), section.Name(), feed.Items)
 	}
 
 	// sort
@@ -62,22 +65,37 @@ func main() {
 	// Generate feeds
 	feed := &feeds.Feed{
 		Title:       "Go Planet",
-		Link:        &feeds.Link{Href: "http://goplanet.github.io"},
+		Link:        &feeds.Link{Href: "https://whitekid.github.io/goplanet/"},
 		Description: "Golang Blog Planet",
 		Author:      &feeds.Author{Name: "Charlie.Choe", Email: "whitekid@gmail.com"},
 		Created:     time.Now(),
 		Items:       make([]*feeds.Item, len(items)),
 	}
 	for i, item := range items {
-		tm := item.PublishedParsed
-		if tm == nil {
-			tm = item.UpdatedParsed
+		created := item.PublishedParsed
+		if created == nil {
+			created = &time.Time{}
+		}
+
+		updated := item.UpdatedParsed
+		if updated == nil {
+			updated = &time.Time{}
+		}
+
+		author := &feeds.Author{}
+		if item.Author != nil {
+			author.Name = item.Author.Name
+			author.Email = item.Author.Email
 		}
 
 		feed.Items[i] = &feeds.Item{
-			Title:   item.Title,
-			Link:    &feeds.Link{Href: item.Link},
-			Created: *tm,
+			Title:       item.Title,
+			Link:        &feeds.Link{Href: item.Link},
+			Created:     *created,
+			Updated:     *updated,
+			Description: item.Description,
+			Content:     item.Content,
+			Author:      author,
 		}
 	}
 
