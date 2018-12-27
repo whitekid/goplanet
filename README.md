@@ -1,3 +1,5 @@
 # Go planet
 
-- generated to feed.rss as aggregated rss feed
+Go blog feed aggregator.
+
+- feed list [feeds.ini]
