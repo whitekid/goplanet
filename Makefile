@@ -8,7 +8,7 @@ all: build
 build: $(TARGET)
 
 $(TARGET): $(SRC)
-	go build -o $(TARGET) ${BUILD_FLAGS} main.go
+	go build -o $(TARGET) ${BUILD_FLAGS} .
 
 bsd: $(SRC)
 	@${MAKE} build GOOS=linux GOARCH=amd64
@@ -21,7 +21,8 @@ test:
 
 # update modules & tidy
 get:
-	go get -u
+	@rm -rf go.mod go.sum
+	@go mod init github.com/whitekid/goplanet
 
 	@$(MAKE) tidy
 
