@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Go Planet</title>
+    <link>https://whitekid.github.io/goplanet/</link>
+    <description>Golang Planet</description>
+    <managingEditor>whitekid@gmail.com (Charlie.Choe)</managingEditor>
+    <pubDate>Mon, 19 Feb 2024 14:25:34 +0900</pubDate>
+    <lastBuildDate>Mon, 19 Feb 2024 14:25:34 +0900</lastBuildDate>
+    <item>
+      <title>Errors</title>
+      <link></link>
+      <description>&#xA;        &#xA;      </description>
+      <content:encoded><![CDATA[
+        
+      ]]></content:encoded>
+    </item>
+    <item>
+      <title>Stars ✨</title>
+      <link>https://carlosbecker.com/stars/</link>
+      <description>More-or-less updated list of stargazers on some repositories I work on:&#xA;goreleaser Repository Stars goreleaser/goreleaser 12626 goreleaser/nfpm 1949 goreleaser/goreleaser-action 782 goreleaser/chglog 239 goreleaser/goreleaser-cross 111 goreleaser/fileglob 62 goreleaser/goreleaser-pro 52 goreleaser/goreleaser-example-supply-chain 52 goreleaser/goreleaser-cross-example 27 goreleaser/example 26 goreleaser/goreleaser-example-zig-cgo 23 goreleaser/homebrew-tap 11 goreleaser/goreleaser-example-slsa-provenance 9 goreleaser/community 8 goreleaser/scoop-bucket 5 goreleaser/goreleaser-pro-split-merge-example 4 goreleaser/artwork 3 goreleaser/goreleaser-pro-split-merge-example-real 3 goreleaser/.github 3 goreleaser/goreleaser-azure-devops-extension 3 goreleaser/nur 2 goreleaser/goreleaser-pro-monorepo-example 2 goreleaser/example-mod-proxy 2 goreleaser/goreleaser-cross-toolchains 1 goreleaser/goreleaser-example-sign-with-env 1 goreleaser/example-simple 1 goreleaser/acceptance-tests 1 goreleaser/goreleaser-pro-prebuilt-example 0 goreleaser/goreleaser-osxcross 0 goreleaser/goreleaser-pro-templatefiles-example 0 goreleaser/goreleaser-cross-example-sysroot 0 goreleaser/goreleaser-action-v4-auto-snapshot-example 0 - 16008 caarlos0 Repository Stars caarlos0/env 4200 caarlos0/starcharts 1129 caarlos0/svu 479 caarlos0/tasktimer 368 caarlos0/timer 368 caarlos0/fork-cleaner 292 caarlos0/domain_exporter 221 caarlos0/org-stats 199 caarlos0/jsonfmt 76 caarlos0/clone-org 69 caarlos0/dotfiles 66 caarlos0/parttysh 57 caarlos0/httperr 54 caarlos0/log 49 caarlos0/speedtest-exporter 48 caarlos0/timea.</description>
+      <guid>https://carlosbecker.com/stars/</guid>
+    </item>
+    <item>
+      <title></title>
+      <link>https://blog.gopheracademy.com/birthday-bash-2014/readme/</link>
+      <description></description>
+      <guid>https://blog.gopheracademy.com/birthday-bash-2014/readme/</guid>
+    </item>
+    <item>
+      <title>Talks</title>
+      <link></link>
+      <description>&#xA;        &#xA;      </description>
+      <content:encoded><![CDATA[
+        
+      ]]></content:encoded>
+    </item>
+    <item>
+      <title>Contribute</title>
+      <link>https://carlosbecker.com/contribute/</link>
+      <description>My long-term goal is to become a full-time open-sourcerer.&#xA;If you like my work, consider donating, gifting a book or buying my apps.&#xA;Thanks a ton 💙&#xA;Buy my apps GoReleaser Pro Donations GitHub Sponsors Open Collective PayPal Bitcoin (BTC): bc1qpqpfxqs20ntktmfmaqf4290tc84cdmdaedwd06 Gift I&amp;rsquo;m always reading something, and there&amp;rsquo;s always something in my Amazon Wishlist.</description>
+      <guid>https://carlosbecker.com/contribute/</guid>
+    </item>
+    <item>
+      <title>Presentations</title>
+      <link>https://jbrandhorst.com/page/presentations/</link>
+      <description>Talks  A Journey to Postgres Productivity (GopherCon US 2020) How and why you should move to Go (Form3 Tech Podcast) Writing REST services for the gRPC-Curious (GoWest 2020) A Crash Course in Protobuf and gRPC with Buf Writing REST services for the gRPC-curious (gRPC Conf 2020) GoTime on Postgres A Journey to Postgres Productivity (GopherCon EU) Automate your TLS certificate distribution (GolangPiter) Get Going with WebAssembly (GolangConf Russia) GoTime on Security Writing REST services for the gRPC-curious (GopherCon UK) Get Going with WebAssembly (GopherCon San Diego) Get Going with WebAssembly (dotGo) Automate your Go TLS certificates with Vault PKI Writing REST services for the gRPC-curious Get Going with WebAssembly (London) Creating GopherJS apps with gRPC-Web (Cambridge) Creating GopherJS Apps with gRPC-Web (Budapest) Creating GopherJS apps with gRPC-Web (FOSDEM) Why REST is dead and what you should use instead Using gRPC-Web to connect GopherJS apps to gRPC backends   A Journey to Postgres Productivity (GopherCon US)  Given at GopherCon US 2020.</description>
+      <guid>https://jbrandhorst.com/page/presentations/</guid>
+    </item>
+    <item>
+      <title>Removeds</title>
+      <link></link>
+      <description>&#xA;        &#xA;      </description>
+      <content:encoded><![CDATA[
+        
+      ]]></content:encoded>
+    </item>
+    <item>
+      <title>About</title>
+      <link>https://carlosbecker.com/about/</link>
+      <description>Carlos writes and operates software for a living. These days, he works making the command line glamorous at Charm and in tools that help people release software faster at GoReleaser.&#xA;While not working on his daily job, he may be hacking on open source, reading books, lifting (rather heavy) weights, or just walking around.&#xA;Carlos is interested in programming languages, Zeichenorientierte Benutzerschnittstellen, containers, distributed systems, security, and monitoring. Feel free to ping me somewhere if you want to chat about any of that.</description>
+      <guid>https://carlosbecker.com/about/</guid>
+    </item>
+    <item>
+      <title>Be more productive using GNU Screen</title>
+      <link>https://spf13.com/post/be-more-productive-using-gnu-screen/</link>
+      <description>Despite living in the age of multicore processors, GUI everything and mountains of ram, I continually find myself more productive with a terminal open. Especially when that terminal is running GNU Screen.&#xA;About GNU Screen GNU Screen is a free terminal multiplexer developed by the GNU Project. It allows a user to access multiple separate terminal sessions inside a single terminal window or remote terminal session. It is useful for dealing with multiple programs from the command line, and for separating programs from the shell that started the program.</description>
+      <guid>https://spf13.com/post/be-more-productive-using-gnu-screen/</guid>
+      <pubDate>Thu, 03 Jul 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Why are you not on Twitter</title>
+      <link>https://spf13.com/post/why-are-you-not-on-twitter/</link>
+      <description>Over the last 2 weeks I have found myself asking that question more times than I can remember. When I first heard about microblogging—or Twitter, the primary service that started the microblogging movement—over a year ago I thought it was a stupid fad and wouldn’t last. I mean what value can possibly be passed along in 140 characters or less. 2 weeks ago I was convinced to try Twitter and I am hooked.</description>
+      <guid>https://spf13.com/post/why-are-you-not-on-twitter/</guid>
+      <pubDate>Fri, 11 Jul 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Implementing a Corporate Wiki</title>
+      <link>https://spf13.com/post/implementing-a-corporate-wiki/</link>
+      <description>It seems all of a sudden, the two buzz words in the corporate IT world are wiki and blog. Corporate wikis are emerging as cheap, intelligent, flexible systems for shared-document collaboration and content management. Because they are browser based, wikis are quite easy to implement and deploy.&#xA;The wiki works well in the corporate world as it solves two problematic areas, the need for internal collaboration and document management.&#xA;Collaboration A wiki aims to replace the email, review, reply-to-all, repeat cycle most corporate environments are more than familiar with.</description>
+      <guid>https://spf13.com/post/implementing-a-corporate-wiki/</guid>
+      <pubDate>Fri, 25 Jul 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The 15 Best Vim Plugins</title>
+      <link>https://spf13.com/post/the-15-best-vim-plugins/</link>
+      <description>One of the things that makes vim great is that it can be extended through plugins. There are plugins for more than you would expect. I have gathered together the 15 best plugins. I’ve included these plugins as part of my ultimate VIM configuration which has been featured on many sites and is hosted on github. I’ve also begun a series of posts on some of these plugins including snipmate and NerdCommenter.</description>
+      <guid>https://spf13.com/post/the-15-best-vim-plugins/</guid>
+      <pubDate>Wed, 30 Jul 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Using SVK to Increase Productivity</title>
+      <link>https://spf13.com/post/using-svk-to-increase-productivity/</link>
+      <description>SVK is a client for SVN built using perl. It makes a number of improvements over the standard svn client, while retaining much of the same feel. It works with the standard Subversion server and works perfectly in an environment with some users using svn and some using svk on the client side. It provides a number of sizable advantages over the standard svn client and is a must have for any development project.</description>
+      <guid>https://spf13.com/post/using-svk-to-increase-productivity/</guid>
+      <pubDate>Sat, 23 Aug 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Managing Multiple Firefox Profiles in OS X</title>
+      <link>https://spf13.com/post/managing-multiple-firefox-profiles-in-os-x/</link>
+      <description>One of the great features of Firefox is the ability to manage multiple profiles. This is a very handy feature with many different uses. Unfortunately, it isn’t easy to do on a mac. I will show you how to setup multiple profiles on a mac that appear and run like normal mac applications so you can click on them and run them from quicksilver.&#xA;UPDATED 10/16/09 : Now working with Snow Leopard!</description>
+      <guid>https://spf13.com/post/managing-multiple-firefox-profiles-in-os-x/</guid>
+      <pubDate>Wed, 27 Aug 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Why are you still shopping offline?</title>
+      <link>https://spf13.com/post/why-are-you-still-shopping-offline/</link>
+      <description>Today I visited one of the largest national office supply outlets. I had a specific purpose in mind. I needed to pickup 2 wireless routers and 1 audio cable. What transpired caused me to wonder why anyone does any offline shopping anymore.&#xA;My experience at the store caused me to reflect on the many things we simply put up with at the store which we would never permit online.&#xA;To begin with I had to drive to the store.</description>
+      <guid>https://spf13.com/post/why-are-you-still-shopping-offline/</guid>
+      <pubDate>Mon, 08 Sep 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Promotion</title>
+      <link>https://spf13.com/post/promotion/</link>
+      <description>Permit me to shamelesly announce my promotion to Chief Information Officer at Portero Inc.&#xA;Here is the Press Release on the wire this week. Portero, Inc., is pleased to announce the promotion of Steve P. Francia to the position of Chief Information Officer (CIO), effective immediately. He will continue to report to Michael Sheldon, the company’s chairman and CEO, and will be responsible for operations and technology for the company. In this role he will guide web, technology and infrastructure developments, which will further contribute to rapid and efficient growth, improved customer satisfaction and real-time business intelligence.</description>
+      <guid>https://spf13.com/post/promotion/</guid>
+      <pubDate>Tue, 23 Sep 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Hire Your Next Consultant Using Twitter</title>
+      <link>https://spf13.com/post/hire-your-next-consultant-using-twitter/</link>
+      <description>At Portero we had an issue with our network.&#xA;I know enough about networking to understand the basics. I actually used to work on the IOS back during the dawn of the internet. Though things have changed since then, the biggest issue is I don’t remember enough to fix network configuration issues on the router level.&#xA;Before I took the post at Portero, we had a company we contracted to configure all of our Cisco equipment.</description>
+      <guid>https://spf13.com/post/hire-your-next-consultant-using-twitter/</guid>
+      <pubDate>Tue, 21 Oct 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>How RIM handed the mobile market over to Apple</title>
+      <link>https://spf13.com/post/how-rim-handed-the-mobile-market-over-to-apple/</link>
+      <description>Hint: It has nothing to do with touch screens.&#xA;While RIM scrambles to create the next greatest device, or their “iPhone killer” it needs to recognize that it’s no longer about the device. RIM don’t you remember that touchscreens aren’t new.. Palm had them back in the 90′s … before you crushed them.&#xA;When RIM ruled the world RIM knows what it takes to dethrone the current market leader. RIM accomplished just that crushing a powerful and established palm.</description>
+      <guid>https://spf13.com/post/how-rim-handed-the-mobile-market-over-to-apple/</guid>
+      <pubDate>Fri, 14 Nov 2008 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>One Hundred Pushups</title>
+      <link>https://spf13.com/post/one-hundred-pushups/</link>
+      <description>A while back a bunch of people were twittering about the 100 pushup challenge. Thanksgiving was the catalyst for me. I began my quest for better health about a week ago.&#xA;The premise of the challenge is quite simple. It is a six week program, that if followed, you can do 100 consecutive good form push ups at the end of the program. I am in decent enough shape now, despite not visiting the gym as often as I should.</description>
+      <guid>https://spf13.com/post/one-hundred-pushups/</guid>
+      <pubDate>Thu, 11 Dec 2008 00:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>
