@@ -91,6 +91,7 @@ func main() {
 		feed.Items[i] = &feeds.Item{
 			Title:       item.Title,
 			Link:        &feeds.Link{Href: item.Link},
+			Id:          item.Link,
 			Created:     *created,
 			Updated:     *updated,
 			Description: item.Description,
