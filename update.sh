@@ -8,3 +8,4 @@ git add golang.xml
 git commit --amend -C HEAD
 git push -f
 git checkout -f master
+git gc
