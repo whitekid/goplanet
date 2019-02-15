@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   {%- for planet in planetplanet.Planets %}
-  <link rel="alternate" type="application/rss+xml" href="{{ planet.Link }}" />
+  <link rel="alternate" type="application/rss+xml" title="{{ planet.Title}}" href="{{ planet.Link }}">
   {%- endfor %}
 </head>
 <body>
