@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/flosch/pongo2"
 	"github.com/gorilla/feeds"
 	"github.com/mmcdole/gofeed"
 	ini "gopkg.in/ini.v1"
@@ -103,8 +104,39 @@ func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 		log.Fatalf("Fail to generate rss: %s", err)
 	}
 
-	f, err := os.OpenFile(planet.Output, os.O_RDWR|os.O_CREATE, 0755)
+	f, err := os.OpenFile(planet.Output, os.O_RDWR|os.O_CREATE, 0644)
+	if err != nil {
+		log.Fatalf("fail to open file %s: %s", planet.Output, err)
+	}
+	defer f.Close()
 	f.WriteString(rss)
+
+	return nil
+}
+
+// Index generate index file
+func (p *PlanetPlanet) Index() error {
+	tpl, err := pongo2.FromFile("index.tmpl")
+	if err != nil {
+		return err
+	}
+
+	context := map[string]interface{}{
+		"planetplanet": p,
+	}
+
+	out, err := tpl.Execute(context)
+	if err != nil {
+		return err
+	}
+
+	f, err := os.OpenFile("index.html", os.O_RDWR|os.O_CREATE, 0644)
+	if err != nil {
+		return err
+	}
+
+	defer f.Close()
+	f.WriteString(out)
 
 	return nil
 }

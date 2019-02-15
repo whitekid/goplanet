@@ -2,6 +2,7 @@ module github.com/whitekid/goplanet
 
 require (
 	github.com/PuerkitoBio/goquery v1.5.0 // indirect
+	github.com/flosch/pongo2 v0.0.0-20181225140029-79872a7b2769
 	github.com/gopherjs/gopherjs v0.0.0-20181103185306-d547d1d9531e // indirect
 	github.com/gorilla/feeds v1.1.0
 	github.com/jtolds/gls v4.2.1+incompatible // indirect

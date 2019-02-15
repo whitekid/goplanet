@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  {%- for planet in planetplanet.Planets %}
+  <link rel="alternate" type="application/rss+xml" href="{{ planet.Link }}" />
+  {%- endfor %}
+</head>
+<body>
+<ul>
+  {%- for planet in planetplanet.Planets %}
+  <li><a href="{{ planet.Link }}">{{ planet.Title }}</a></li>
+  {%- endfor %}
+</ul>
+</body>
+</html>

@@ -11,4 +11,6 @@ func main() {
 	for _, p := range pp.Planets {
 		pp.ToRSS(p.Load(), &p)
 	}
+
+	pp.Index()
 }
