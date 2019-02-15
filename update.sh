@@ -1,5 +1,5 @@
 #!/bin/sh -e
-make build
+gmake build
 git checkout -f gh-pages
 git checkout master -- feeds.ini index.tmpl
 bin/goplanet
