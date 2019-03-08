@@ -20,7 +20,7 @@ test:
 	go test
 
 # update modules & tidy
-get:
+dep:
 	@rm -rf go.mod go.sum
 	@go mod init github.com/whitekid/goplanet
 
