@@ -7,8 +7,27 @@ import (
 	"os"
 	"testing"
 
+	"github.com/mmcdole/gofeed"
 	"github.com/stretchr/testify/require"
 )
+
+func TestParse(t *testing.T) {
+	pp, err := Load()
+	require.NoError(t, err)
+	for _, planet := range pp.Planets {
+		for _, feedURL := range planet.Feeds {
+			feedURL := feedURL
+			t.Run(feedURL, func(t *testing.T) {
+				t.Parallel()
+
+				parser := gofeed.NewParser()
+				feed, err := parser.ParseURL(feedURL)
+				require.NoErrorf(t, err, "feed=%s", feedURL)
+				require.NotEmpty(t, feed.Items, "feed=%", feedURL)
+			})
+		}
+	}
+}
 
 func TestPlanetPlanet_Index(t *testing.T) {
 	type fields struct {
