@@ -14,9 +14,9 @@ func TestLoadPlanet(t *testing.T) {
 	require.Equal(t, "whitekid@gmail.com", pp.Email)
 	require.NotEqual(t, 0, len(pp.Planets))
 
+	require.Equal(t, "Go Planet", pp.Planets[0].Title)
+	require.Equal(t, "golang.xml", pp.Planets[0].Output)
 	for _, p := range pp.Planets {
-		require.Equal(t, "Go Planet", p.Title)
-		require.Equal(t, "golang.xml", p.Output)
 		require.NotEqual(t, 0, len(p.Feeds))
 	}
 }

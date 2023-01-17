@@ -1,16 +1,18 @@
 package main
 
 import (
-	"log"
+	"context"
 	"os"
-	"sort"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/flosch/pongo2"
 	"github.com/gorilla/feeds"
 	"github.com/mmcdole/gofeed"
+	"github.com/pkg/errors"
+	"github.com/whitekid/goxp"
+	"github.com/whitekid/goxp/fx"
+	"github.com/whitekid/goxp/log"
 	ini "gopkg.in/ini.v1"
 )
 
@@ -41,20 +43,18 @@ func Load() (*PlanetPlanet, error) {
 	p.Author = cfg.Section("").Key("author").String()
 	p.Email = cfg.Section("").Key("email").String()
 
-	for _, section := range cfg.Sections() {
-		if !strings.HasPrefix(section.Name(), "planet:") {
-			continue
+	sections := fx.Filter(cfg.Sections(), func(section *ini.Section) bool {
+		return strings.HasPrefix(section.Name(), "planet:")
+	})
+	p.Planets = fx.Map(sections, func(section *ini.Section) Planet {
+		return Planet{
+			Title:       section.Name()[7:],
+			Description: section.Key("description").String(),
+			Output:      section.Key("output").String(),
+			Link:        section.Key("link").String(),
+			Feeds:       section.Key("feed").ValueWithShadows(),
 		}
-
-		p.Planets = append(p.Planets,
-			Planet{
-				Title:       section.Name()[7:],
-				Description: section.Key("description").String(),
-				Output:      section.Key("output").String(),
-				Link:        section.Key("link").String(),
-				Feeds:       section.Key("feed").ValueWithShadows(),
-			})
-	}
+	})
 
 	return p, nil
 }
@@ -67,27 +67,18 @@ func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 		Description: planet.Description,
 		Author:      &feeds.Author{Name: p.Author, Email: p.Email},
 		Created:     time.Now(),
-		Items:       make([]*feeds.Item, len(items)),
 	}
 
-	for i, item := range items {
-		created := item.PublishedParsed
-		if created == nil {
-			created = &time.Time{}
-		}
-
-		updated := item.UpdatedParsed
-		if updated == nil {
-			updated = &time.Time{}
-		}
+	feed.Items = fx.Map(items, func(item *gofeed.Item) *feeds.Item {
+		created := fx.Ternary(item.PublishedParsed != nil, item.PublishedParsed, &time.Time{})
+		updated := fx.Ternary(item.UpdatedParsed != nil, item.UpdatedParsed, &time.Time{})
 
 		author := &feeds.Author{}
 		if item.Author != nil {
-
 			author.Email = item.Author.Email
 		}
 
-		feed.Items[i] = &feeds.Item{
+		return &feeds.Item{
 			Title:       item.Title,
 			Link:        &feeds.Link{Href: item.Link},
 			Id:          item.Link,
@@ -97,21 +88,21 @@ func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 			Content:     item.Content,
 			Author:      author,
 		}
-	}
+	})
 
 	rss, err := feed.ToRss()
 	if err != nil {
-		log.Fatalf("Fail to generate rss: %s", err)
+		return errors.Wrap(err, "fail to generate rss")
 	}
 
 	f, err := os.OpenFile(planet.Output, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
-		log.Fatalf("fail to open file %s: %s", planet.Output, err)
+		return errors.Wrapf(err, "fail to open file %s", planet.Output)
 	}
 	defer f.Close()
-	f.WriteString(rss)
+	_, err = f.WriteString(rss)
 
-	return nil
+	return err
 }
 
 // Index generate index file
@@ -121,11 +112,7 @@ func (p *PlanetPlanet) Index() error {
 		return err
 	}
 
-	context := map[string]interface{}{
-		"planetplanet": p,
-	}
-
-	out, err := tpl.Execute(context)
+	out, err := tpl.Execute(pongo2.Context{"planetplanet": p})
 	if err != nil {
 		return err
 	}
@@ -134,69 +121,59 @@ func (p *PlanetPlanet) Index() error {
 	if err != nil {
 		return err
 	}
-
 	defer f.Close()
-	f.WriteString(out)
 
-	return nil
+	_, err = f.WriteString(out)
+	return err
 }
 
 // Load ...
-func (p *Planet) Load() []*gofeed.Item {
-	var wg sync.WaitGroup
+func (p *Planet) Load(ctx context.Context) []*gofeed.Item {
 	feedC := make(chan string, 30)
 	resultC := make(chan []*gofeed.Item, 30)
 
-	// start worker
-	for i := 0; i < 5; i++ {
-		wg.Add(1)
-		go func(ID int) {
-			defer wg.Done()
-			for feedURL := range feedC {
-				t := time.Now()
-				parser := gofeed.NewParser()
-				feed, err := parser.ParseURL(feedURL)
-				if err != nil {
-					log.Printf("Fail to parse feed: %s", p.Title)
-					return
-				}
-
-				log.Printf("[%d] %s has %d items. %s",
-					ID, feedURL, len(feed.Items), time.Since(t))
-				resultC <- feed.Items
-			}
-		}(i)
-	}
-
-	// close result channel when worker done
+	// feed
 	go func() {
-		wg.Wait()
-		close(resultC)
+		for _, u := range p.Feeds {
+			feedC <- u
+		}
+		close(feedC)
 	}()
 
-	// feed
-	for _, u := range p.Feeds {
-		feedC <- u
-	}
-	close(feedC)
+	// start worker
+	goxp.DoWithWorker(ctx, 5, func(i int) error {
+		fx.IterChan(ctx, feedC, func(feedURL string) {
+			t := time.Now()
+			parser := gofeed.NewParser()
+			feed, err := parser.ParseURL(feedURL)
+			if err != nil {
+				log.Infof("Fail to parse feed: %s", p.Title)
+				return
+			}
+
+			log.Infof("[%d] %s has %d items. %s",
+				i, feedURL, len(feed.Items), time.Since(t))
+			resultC <- feed.Items
+		})
+		return nil
+	})
+	close(resultC)
 
 	items := []*gofeed.Item{}
-	for r := range resultC {
-		items = append(items, r...)
-	}
+	fx.IterChan(ctx, resultC, func(item []*gofeed.Item) { items = append(items, item...) })
 
-	sort.Slice(items, func(i, j int) bool {
-		timei := items[i].PublishedParsed
-		if timei == nil {
-			timei = items[i].UpdatedParsed
+	items = fx.SortFunc(items, func(a, b *gofeed.Item) bool {
+		timea := a.PublishedParsed
+		if timea == nil {
+			timea = a.UpdatedParsed
 		}
 
-		timej := items[j].PublishedParsed
-		if timej == nil {
-			timej = items[j].UpdatedParsed
+		timeb := b.PublishedParsed
+		if timeb == nil {
+			timeb = b.UpdatedParsed
 		}
 
-		return timei.After(*timej)
+		return timea.After(*timeb)
 	})
 
 	return items
