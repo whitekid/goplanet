@@ -16,13 +16,13 @@ func TestPlanetPlanet_Index(t *testing.T) {
 		Email   string
 		Planets []Planet
 	}
-	tests := []struct {
+	tests := [...]struct {
 		name    string
 		fields  fields
 		wantErr bool
 	}{
 		{"default", fields{Author: "author", Email: "email", Planets: []Planet{
-			Planet{
+			{
 				Title:       "Title",
 				Description: "Description",
 				Link:        "http://feed.link",

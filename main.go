@@ -1,8 +1,8 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
@@ -16,18 +16,7 @@ func main() {
 	root.AddCommand(&cobra.Command{
 		Use:   "update",
 		Short: "update feeds",
-		Run: func(cmd *cobra.Command, args []string) {
-			pp, err := Load()
-			if err != nil {
-				log.Fatalf("Fail to load config: %s", err)
-			}
-
-			for _, p := range pp.Planets {
-				pp.ToRSS(p.Load(), &p)
-			}
-
-			pp.Index()
-		},
+		RunE:  func(cmd *cobra.Command, args []string) error { return updateRSS(cmd.Context()) },
 	})
 
 	root.AddCommand(&cobra.Command{
@@ -39,8 +28,9 @@ func main() {
 			if err != nil {
 				return err
 			}
+			defer resp.Body.Close()
 
-			doc, err := goquery.NewDocumentFromResponse(resp)
+			doc, err := goquery.NewDocumentFromReader(resp.Body)
 			if err != nil {
 				return err
 			}
@@ -65,4 +55,19 @@ func main() {
 	if err := root.Execute(); err != nil {
 		os.Exit(1)
 	}
+}
+
+func updateRSS(ctx context.Context) error {
+	pp, err := Load()
+	if err != nil {
+		return err
+	}
+
+	for _, p := range pp.Planets {
+		if err := pp.ToRSS(p.Load(ctx), &p); err != nil {
+			return err
+		}
+	}
+
+	return pp.Index()
 }
