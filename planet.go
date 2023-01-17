@@ -147,7 +147,7 @@ func (p *Planet) Load(ctx context.Context) []*gofeed.Item {
 			parser := gofeed.NewParser()
 			feed, err := parser.ParseURL(feedURL)
 			if err != nil {
-				log.Infof("Fail to parse feed: %s", p.Title)
+				log.Errorf("fail to parse feed: %s", feedURL)
 				return
 			}
 
