@@ -69,5 +69,5 @@ func updateRSS(ctx context.Context) error {
 		}
 	}
 
-	return pp.Index()
+	return pp.GenerateIndex()
 }

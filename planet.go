@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"os"
-	"strings"
 	"time"
 
 	"github.com/flosch/pongo2"
@@ -11,50 +10,40 @@ import (
 	"github.com/mmcdole/gofeed"
 	"github.com/pkg/errors"
 	"github.com/whitekid/goxp"
-	"github.com/whitekid/goxp/fx"
 	"github.com/whitekid/goxp/log"
-	ini "gopkg.in/ini.v1"
+	"github.com/whitekid/iter"
+	"golang.org/x/sync/errgroup"
+	"gopkg.in/yaml.v3"
 )
 
 // PlanetPlanet ...
 type PlanetPlanet struct {
-	Author  string
-	Email   string
-	Planets []Planet
+	Author  string   `yaml:"author"`
+	Email   string   `yaml:"email"`
+	Planets []Planet `yaml:"planet"`
 }
 
 // Planet ...
 type Planet struct {
-	Title       string
-	Description string
-	Link        string
-	Output      string
-	Feeds       []string
+	Title       string   `yaml:"title"`
+	Description string   `yaml:"description"`
+	HtmlLink    string   `yaml:"htmlLink"` // html link
+	Link        string   `yaml:"link"`     // rss link
+	Output      string   `yaml:"output"`
+	Feeds       []string `yaml:"feeds"`
 }
 
 // Load ...
 func Load() (*PlanetPlanet, error) {
-	cfg, err := ini.ShadowLoad("feeds.ini")
+	f, err := os.Open("feeds.yaml")
 	if err != nil {
 		return nil, err
 	}
 
 	p := &PlanetPlanet{}
-	p.Author = cfg.Section("").Key("author").String()
-	p.Email = cfg.Section("").Key("email").String()
-
-	sections := fx.Filter(cfg.Sections(), func(section *ini.Section) bool {
-		return strings.HasPrefix(section.Name(), "planet:")
-	})
-	p.Planets = fx.Map(sections, func(section *ini.Section) Planet {
-		return Planet{
-			Title:       section.Name()[7:],
-			Description: section.Key("description").String(),
-			Output:      section.Key("output").String(),
-			Link:        section.Key("link").String(),
-			Feeds:       section.Key("feed").ValueWithShadows(),
-		}
-	})
+	if err := yaml.NewDecoder(f).Decode(p); err != nil {
+		return nil, err
+	}
 
 	return p, nil
 }
@@ -63,15 +52,15 @@ func Load() (*PlanetPlanet, error) {
 func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 	feed := &feeds.Feed{
 		Title:       planet.Title,
-		Link:        &feeds.Link{Href: planet.Link},
+		Link:        &feeds.Link{Href: planet.HtmlLink},
 		Description: planet.Description,
 		Author:      &feeds.Author{Name: p.Author, Email: p.Email},
-		Created:     time.Now(),
+		Updated:     time.Now(),
 	}
 
-	feed.Items = fx.Map(items, func(item *gofeed.Item) *feeds.Item {
-		created := fx.Ternary(item.PublishedParsed != nil, item.PublishedParsed, &time.Time{})
-		updated := fx.Ternary(item.UpdatedParsed != nil, item.UpdatedParsed, &time.Time{})
+	feed.Items = iter.Map(iter.S(items), func(item *gofeed.Item) *feeds.Item {
+		created := goxp.Ternary(item.PublishedParsed != nil, item.PublishedParsed, &time.Time{})
+		updated := goxp.Ternary(item.UpdatedParsed != nil, item.UpdatedParsed, &time.Time{})
 
 		author := &feeds.Author{}
 		if item.Author != nil {
@@ -88,7 +77,7 @@ func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 			Content:     item.Content,
 			Author:      author,
 		}
-	})
+	}).Slice()
 
 	rss, err := feed.ToRss()
 	if err != nil {
@@ -105,8 +94,8 @@ func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 	return err
 }
 
-// Index generate index file
-func (p *PlanetPlanet) Index() error {
+// GenerateIndex generate index file
+func (p *PlanetPlanet) GenerateIndex() error {
 	tpl, err := pongo2.FromFile("index.tmpl")
 	if err != nil {
 		return err
@@ -141,28 +130,30 @@ func (p *Planet) Load(ctx context.Context) []*gofeed.Item {
 	}()
 
 	// start worker
-	goxp.DoWithWorker(ctx, 5, func(i int) error {
-		fx.IterChan(ctx, feedC, func(feedURL string) {
+	eg, _ := errgroup.WithContext(ctx)
+	iter.C(feedC).Each(func(feedURL string) {
+		eg.Go(func() error {
 			t := time.Now()
 			parser := gofeed.NewParser()
 			feed, err := parser.ParseURL(feedURL)
 			if err != nil {
 				log.Errorf("fail to parse feed: %s", feedURL)
-				return
+				return err
 			}
 
-			log.Infof("[%d] %s has %d items. %s",
-				i, feedURL, len(feed.Items), time.Since(t))
+			log.Infof("%s has %d items. %s",
+				feedURL, len(feed.Items), time.Since(t))
 			resultC <- feed.Items
+			return nil
 		})
-		return nil
 	})
+	eg.Wait()
 	close(resultC)
 
 	items := []*gofeed.Item{}
-	fx.IterChan(ctx, resultC, func(item []*gofeed.Item) { items = append(items, item...) })
+	iter.C(resultC).Each(func(item []*gofeed.Item) { items = append(items, item...) })
 
-	items = fx.SortFunc(items, func(a, b *gofeed.Item) bool {
+	return iter.SortedFunc(iter.S(items), func(a, b *gofeed.Item) bool {
 		timea := a.PublishedParsed
 		if timea == nil {
 			timea = a.UpdatedParsed
@@ -174,7 +165,5 @@ func (p *Planet) Load(ctx context.Context) []*gofeed.Item {
 		}
 
 		return timea.After(*timeb)
-	})
-
-	return items
+	}).Slice()
 }
