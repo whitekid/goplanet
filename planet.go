@@ -84,7 +84,7 @@ func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 		return errors.Wrap(err, "fail to generate rss")
 	}
 
-	f, err := os.OpenFile(planet.Output, os.O_RDWR|os.O_CREATE, 0644)
+	f, err := os.OpenFile(planet.Output, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0644)
 	if err != nil {
 		return errors.Wrapf(err, "fail to open file %s", planet.Output)
 	}
