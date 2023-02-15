@@ -2,4 +2,4 @@
 
 Just simple Golang blog feed aggregator.
 
-- feed list [feeds.ini](feeds.ini)
+- feed list [feeds.yaml](feeds.yaml)
