@@ -50,6 +50,10 @@ func Load() (*PlanetPlanet, error) {
 
 // ToRSS ...
 func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
+	if len(items) > 20 {
+		items = items[:19]
+	}
+
 	feed := &feeds.Feed{
 		Title:       planet.Title,
 		Link:        &feeds.Link{Href: planet.HtmlLink},
