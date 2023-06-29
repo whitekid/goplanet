@@ -157,7 +157,7 @@ func (p *Planet) Load(ctx context.Context) []*gofeed.Item {
 	items := []*gofeed.Item{}
 	iter.C(resultC).Each(func(item []*gofeed.Item) { items = append(items, item...) })
 
-	return iter.SortedFunc(iter.S(items), func(a, b *gofeed.Item) bool {
+	return iter.SortedFunc(iter.S(items), func(a, b *gofeed.Item) int {
 		timea := a.PublishedParsed
 		if timea == nil {
 			timea = a.UpdatedParsed
@@ -168,6 +168,6 @@ func (p *Planet) Load(ctx context.Context) []*gofeed.Item {
 			timeb = b.UpdatedParsed
 		}
 
-		return timea.After(*timeb)
+		return int(timea.Unix() - timeb.Unix())
 	}).Slice()
 }
