@@ -11,6 +11,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/whitekid/goxp"
 	"github.com/whitekid/goxp/log"
+	"github.com/whitekid/goxp/slicex"
 	"github.com/whitekid/iter"
 	"golang.org/x/sync/errgroup"
 	"gopkg.in/yaml.v3"
@@ -62,7 +63,7 @@ func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 		Updated:     time.Now(),
 	}
 
-	feed.Items = iter.Map(iter.S(items), func(item *gofeed.Item) *feeds.Item {
+	feed.Items = slicex.Map(items, func(item *gofeed.Item) *feeds.Item {
 		created := goxp.Ternary(item.PublishedParsed != nil, item.PublishedParsed, &time.Time{})
 		updated := goxp.Ternary(item.UpdatedParsed != nil, item.UpdatedParsed, &time.Time{})
 
@@ -81,7 +82,7 @@ func (p *PlanetPlanet) ToRSS(items []*gofeed.Item, planet *Planet) error {
 			Content:     item.Content,
 			Author:      author,
 		}
-	}).Slice()
+	})
 
 	rss, err := feed.ToRss()
 	if err != nil {
